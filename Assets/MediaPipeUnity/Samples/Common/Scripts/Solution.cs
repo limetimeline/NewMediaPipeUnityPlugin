@@ -110,8 +110,9 @@ namespace Mediapipe.Unity
 
     private void DisableMenuButton()
     {
-      var menuButton = GameObject.Find("MenuButton");
-      menuButton.SetActive(false);
+      /* 주석처리 안하면 Main Canvas 없앤거 오류남. */
+      // var menuButton = GameObject.Find("MenuButton");
+      // menuButton.SetActive(false);
     }
   }
 }

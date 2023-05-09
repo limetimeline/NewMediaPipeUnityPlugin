@@ -136,7 +136,7 @@ namespace Mediapipe.Unity
 
       if (availableSources != null && availableSources.Length > 0)
       {
-        webCamDevice = availableSources[0];
+        webCamDevice = availableSources[0]; // 0 : 후면 카메라, 1 : 전면 카메라
       }
 
       _isInitialized = true;
