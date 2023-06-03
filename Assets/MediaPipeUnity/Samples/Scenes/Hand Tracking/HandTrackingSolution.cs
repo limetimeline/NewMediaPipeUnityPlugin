@@ -16,7 +16,9 @@ namespace Mediapipe.Unity.HandTracking
     [SerializeField] private NormalizedRectListAnnotationController _handRectsFromPalmDetectionsAnnotationController;
     [SerializeField] private MultiHandLandmarkListAnnotationController _handLandmarksAnnotationController;
     [SerializeField] private NormalizedRectListAnnotationController _handRectsFromLandmarksAnnotationController;
-
+    
+    GameManager gameManager = new GameManager();
+    
     public HandTrackingGraph.ModelComplexity modelComplexity
     {
       get => graphRunner.modelComplexity;
@@ -49,6 +51,7 @@ namespace Mediapipe.Unity.HandTracking
         graphRunner.OnHandRectsFromPalmDetectionsOutput += OnHandRectsFromPalmDetectionsOutput;
         graphRunner.OnHandLandmarksOutput += OnHandLandmarksOutput;
         // TODO: render HandWorldLandmarks annotations
+        graphRunner.OnHandWorldLandmarksOutput += OnHandWorldLandmarksOutput; // Add
         graphRunner.OnHandRectsFromLandmarksOutput += OnHandRectsFromLandmarksOutput;
         graphRunner.OnHandednessOutput += OnHandednessOutput;
       }
@@ -90,29 +93,43 @@ namespace Mediapipe.Unity.HandTracking
       _handRectsFromLandmarksAnnotationController.DrawNow(handRectsFromLandmarks);
     }
 
+    /* Hand Annotation 그리기 */
+    private void OnHandWorldLandmarksOutput(object stream, OutputEventArgs<List<LandmarkList>> eventArgs)
+    {
+      /*_palmDetectionsAnnotationController.DrawLater(eventArgs.value);*/
+      gameManager.OutputHandWorldLandmarks(eventArgs);
+    }
+
     private void OnPalmDetectionsOutput(object stream, OutputEventArgs<List<Detection>> eventArgs)
     {
-      _palmDetectionsAnnotationController.DrawLater(eventArgs.value);
+      /*_palmDetectionsAnnotationController.DrawLater(eventArgs.value);*/
+      gameManager.OutputPalmDetections(eventArgs);
     }
 
     private void OnHandRectsFromPalmDetectionsOutput(object stream, OutputEventArgs<List<NormalizedRect>> eventArgs)
     {
-      _handRectsFromPalmDetectionsAnnotationController.DrawLater(eventArgs.value);
+      /*_handRectsFromPalmDetectionsAnnotationController.DrawLater(eventArgs.value);*/
+      gameManager.OutputHandRectsFromPalmDetections(eventArgs);
     }
 
     private void OnHandLandmarksOutput(object stream, OutputEventArgs<List<NormalizedLandmarkList>> eventArgs)
     {
       _handLandmarksAnnotationController.DrawLater(eventArgs.value);
+      gameManager.OutputHandLandmarks(eventArgs);
+      
     }
 
     private void OnHandRectsFromLandmarksOutput(object stream, OutputEventArgs<List<NormalizedRect>> eventArgs)
     {
-      _handRectsFromLandmarksAnnotationController.DrawLater(eventArgs.value);
+      /*      _handRectsFromLandmarksAnnotationController.DrawLater(eventArgs.value);*/
+      gameManager.OutputHandRectsFromLandmarks(eventArgs);
     }
 
     private void OnHandednessOutput(object stream, OutputEventArgs<List<ClassificationList>> eventArgs)
     {
-      _handLandmarksAnnotationController.DrawLater(eventArgs.value);
+
+      /*_handLandmarksAnnotationController.DrawLater(eventArgs.value);*/
+      gameManager.OutputHandedness(eventArgs);
     }
   }
 }
